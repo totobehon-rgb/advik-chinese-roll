@@ -1,22 +1,12 @@
 <!DOCTYPE html>
+<!-- saved from url=(0103)http://localhost:63342/web%20gps%20app/c.html?_ijt=njmcc133qi5as2e6m6ff9qaffs&_ij_reload=RELOAD_ON_SAVE -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Advik Chinese &amp; Roll</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 body { font-family:'Segoe UI',sans-serif; background:#111214; color:#f0f0f0; min-height:100vh; overflow-x:hidden; }
-
-/* ── BACKGROUND ANIMATION CANVAS ── */
-#bgCanvas {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Make sure all page content sits above bg canvas */
-.nav, .page, .overlay { position: relative; z-index: 1; }
 
 /* NAV */
 .nav { background:#111214; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; border-bottom:2px solid #f5c800; }
@@ -33,9 +23,16 @@ body { font-family:'Segoe UI',sans-serif; background:#111214; color:#f0f0f0; min
 /* ── HERO ── */
 .hero {
   position:relative; overflow:hidden;
-  background: transparent;
+  background:#0e0b00;
   padding:0 0 0 0;
   border-bottom:3px solid #f5c800;
+}
+.hero-bg-img {
+  position:absolute; inset:0;
+  background-image:url('[images.unsplash.com](https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=900&q=80)');
+  background-size:cover; background-position:center top;
+  filter:brightness(0.22) saturate(1.4);
+  z-index:0;
 }
 .hero-content {
   position:relative; z-index:1;
@@ -58,7 +55,7 @@ body { font-family:'Segoe UI',sans-serif; background:#111214; color:#f0f0f0; min
 
 /* GAME TEASER CARD */
 .game-teaser {
-  background:linear-gradient(135deg,rgba(26,16,0,0.92) 0%,rgba(13,13,0,0.92) 100%);
+  background:linear-gradient(135deg,#1a1000 0%,#0d0d00 100%);
   border:1.5px solid #f5c800;
   border-radius:20px;
   padding:20px 18px 22px;
@@ -126,7 +123,7 @@ body { font-family:'Segoe UI',sans-serif; background:#111214; color:#f0f0f0; min
 @keyframes ticker { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
 
 /* CONTACT BAR */
-.contact-bar { background:rgba(26,18,0,0.85); border-top:1px solid rgba(245,200,0,0.15); border-bottom:1px solid rgba(245,200,0,0.15); padding:10px 20px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:13px; color:rgba(255,255,255,0.5); }
+.contact-bar { background:#1a1200; border-top:1px solid rgba(245,200,0,0.15); border-bottom:1px solid rgba(245,200,0,0.15); padding:10px 20px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:13px; color:rgba(255,255,255,0.5); }
 .contact-bar span { color:#f5c800; font-weight:600; }
 
 /* SECTION TITLE */
@@ -174,7 +171,7 @@ body { font-family:'Segoe UI',sans-serif; background:#111214; color:#f0f0f0; min
 .ui-box { background:rgba(245,200,0,0.08); border:1px solid rgba(245,200,0,0.2); border-radius:12px; padding:8px 16px; color:#fff; font-size:14px; font-weight:500; }
 .ui-box span { color:#f5c800; font-weight:700; }
 #lives { display:flex; gap:4px; align-items:center; }
-canvas#c { display:block; border-radius:16px; max-width:100%; }
+canvas { display:block; border-radius:16px; max-width:100%; }
 .progress-wrap { width:70%; margin:10px auto 0; }
 .progress-label { font-size:11px; color:rgba(255,255,255,0.4); text-align:center; margin-bottom:5px; }
 .progress-track { background:rgba(255,255,255,0.08); border-radius:99px; height:6px; overflow:hidden; }
@@ -183,11 +180,11 @@ canvas#c { display:block; border-radius:16px; max-width:100%; }
 .powered span { color:rgba(245,200,0,0.5); font-weight:700; }
 
 /* LEADERBOARD */
-.lb-header { background:rgba(26,18,0,0.85); padding:20px; color:#fff; text-align:center; border-bottom:2px solid #f5c800; }
+.lb-header { background:#1a1200; padding:20px; color:#fff; text-align:center; border-bottom:2px solid #f5c800; }
 .lb-header h2 { font-size:22px; font-weight:700; }
 .lb-header p { font-size:13px; color:rgba(255,255,255,0.5); margin-top:4px; }
 .lb-list { padding:16px; }
-.lb-row { background:rgba(26,26,26,0.85); border:1px solid rgba(245,200,0,0.1); border-radius:12px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; gap:14px; }
+.lb-row { background:#1a1a1a; border:1px solid rgba(245,200,0,0.1); border-radius:12px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; gap:14px; }
 .lb-rank { font-size:22px; min-width:36px; text-align:center; }
 .lb-name { font-size:15px; font-weight:600; flex:1; color:#f0f0f0; }
 .lb-score { font-size:16px; font-weight:700; color:#f5c800; }
@@ -263,26 +260,18 @@ canvas#c { display:block; border-radius:16px; max-width:100%; }
 .flagged-section { margin-top:20px; padding:16px; background:#1a1400; border-radius:12px; border:1px solid rgba(245,200,0,0.2); }
 .flagged-section h4 { font-size:13px; color:#f5c800; margin-bottom:10px; }
 
-/* Menu page & leaderboard bg */
-#page-menu, #page-leaderboard {
-  background: rgba(17,18,20,0.85);
-}
-
 button { font-family:inherit; }
 </style>
 </head>
 <body>
 
-<!-- ════════════ BACKGROUND ANIMATION CANVAS ════════════ -->
-<canvas id="bgCanvas"></canvas>
-
 <nav class="nav">
   <div>
-    <div class="nav-logo" onclick="showPage('home')">🍜 Advik <span>Chinese &amp; Roll</span></div>
+    <div class="nav-logo" onclick="showPage(&#39;home&#39;)">🍜 Advik <span>Chinese &amp; Roll</span></div>
   </div>
   <div class="nav-right">
-    <button class="nav-btn" onclick="showPage('menu')">Menu</button>
-    <button class="nav-btn" onclick="showPage('leaderboard')">🏆</button>
+    <button class="nav-btn" onclick="showPage(&#39;menu&#39;)">Menu</button>
+    <button class="nav-btn" onclick="showPage(&#39;leaderboard&#39;)">🏆</button>
   </div>
 </nav>
 
@@ -290,6 +279,7 @@ button { font-family:inherit; }
 <div id="page-home" class="page active">
 
   <div class="hero">
+    <div class="hero-bg-img"></div>
     <div class="hero-content">
       <div class="hero-badge">🍜 Advik Chinese &amp; Roll</div>
       <h1>Hungry? <span>Play &amp; Eat Free.</span></h1>
@@ -313,15 +303,15 @@ button { font-family:inherit; }
       </div>
 
       <div class="hero-btns">
-        <button class="btn-primary" onclick="showPage('menu')">📋 View Menu</button>
-        <button class="btn-outline" onclick="showPage('leaderboard')">🏆 Leaderboard</button>
+        <button class="btn-primary" onclick="showPage(&#39;menu&#39;)">📋 View Menu</button>
+        <button class="btn-outline" onclick="showPage(&#39;leaderboard&#39;)">🏆 Leaderboard</button>
       </div>
     </div>
   </div>
 
   <!-- TICKER -->
   <div class="ticker-wrap">
-    <div class="ticker-inner" id="tickerInner"></div>
+    <div class="ticker-inner" id="tickerInner"><span class="ticker-item">🍜 Veg Noodles from ₹60<span class="ticker-dot"></span></span><span class="ticker-item">🌯 Paneer Roll ₹80<span class="ticker-dot"></span></span><span class="ticker-item">🥡 Veg Manchurian from ₹60<span class="ticker-dot"></span></span><span class="ticker-item">🎮 Score 500 pts → WIN Free Noodles!<span class="ticker-dot"></span></span><span class="ticker-item">🧀 Paneer 65 from ₹70<span class="ticker-dot"></span></span><span class="ticker-item">🍚 Paneer Schezwan Rice ₹70<span class="ticker-dot"></span></span><span class="ticker-item">🏆 Play Food Guard Now!<span class="ticker-dot"></span></span><span class="ticker-item">📞 9175630108 | 9307567733<span class="ticker-dot"></span></span><span class="ticker-item">🍜 Veg Noodles from ₹60<span class="ticker-dot"></span></span><span class="ticker-item">🌯 Paneer Roll ₹80<span class="ticker-dot"></span></span><span class="ticker-item">🥡 Veg Manchurian from ₹60<span class="ticker-dot"></span></span><span class="ticker-item">🎮 Score 500 pts → WIN Free Noodles!<span class="ticker-dot"></span></span><span class="ticker-item">🧀 Paneer 65 from ₹70<span class="ticker-dot"></span></span><span class="ticker-item">🍚 Paneer Schezwan Rice ₹70<span class="ticker-dot"></span></span><span class="ticker-item">🏆 Play Food Guard Now!<span class="ticker-dot"></span></span><span class="ticker-item">📞 9175630108 | 9307567733<span class="ticker-dot"></span></span></div>
   </div>
 
   <div class="contact-bar">
@@ -336,7 +326,7 @@ button { font-family:inherit; }
 
 <!-- ════════════ MENU ════════════ -->
 <div id="page-menu" class="page">
-  <div style="background:rgba(26,18,0,0.9);padding:20px;color:#fff;text-align:center;border-bottom:2px solid #f5c800;">
+  <div style="background:#1a1200;padding:20px;color:#fff;text-align:center;border-bottom:2px solid #f5c800;">
     <h2 style="font-size:22px;font-weight:800;">🍜 Food Menu</h2>
     <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px;">Advik Chinese &amp; Roll</p>
   </div>
@@ -413,13 +403,13 @@ button { font-family:inherit; }
 <!-- ════════════ GAME ════════════ -->
 <div id="page-game" class="page game-page">
   <div id="ui">
-    <div class="ui-box">Score <span id="scoreDisplay">0</span></div>
-    <div class="ui-box" id="lives"><span style="opacity:1">❤️</span><span style="opacity:1">❤️</span><span style="opacity:1">❤️</span></div>
+    <div class="ui-box">Score <span id="scoreDisplay">70</span></div>
+    <div class="ui-box" id="lives"><span style="opacity:1">❤️</span><span style="opacity:0.2">❤️</span><span style="opacity:0.2">❤️</span></div>
   </div>
   <canvas id="c" width="575" height="575"></canvas>
   <div class="progress-wrap">
     <div class="progress-label">Goal: 500 points</div>
-    <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="progress-track"><div class="progress-bar" id="progressBar" style="width: 14%;"></div></div>
   </div>
   <div class="powered">Powered by <span>Web with Saurabh</span></div>
 </div>
@@ -434,7 +424,7 @@ button { font-family:inherit; }
   <div style="text-align:center;padding:10px 20px 30px;">
     <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-bottom:16px;">Powered by <strong style="color:rgba(245,200,0,0.4);">Web with Saurabh</strong></div>
     <div id="adminTrigger" style="font-size:28px;cursor:pointer;user-select:none;" onclick="handleAdminTap()">🍜</div>
-    <div id="adminTapHint" style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px;opacity:0;transition:opacity 0.3s;"></div>
+    <div id="adminTapHint" style="font-size: 10px; color: rgba(255, 255, 255, 0.3); margin-top: 4px; opacity: 0; transition: opacity 0.3s;"></div>
   </div>
 </div>
 
@@ -447,9 +437,9 @@ button { font-family:inherit; }
     <h2>Enter Your Name</h2>
     <p>Your name will appear on the leaderboard. Keep it clean and fun!</p>
     <input type="text" id="usernameInput" placeholder="Your name..." maxlength="18" autocomplete="off">
-    <div id="usernameError" style="color:#ff4d4f;font-size:13px;margin:-8px 0 12px;display:none;"></div>
+    <div id="usernameError" style="color: rgb(255, 77, 79); font-size: 13px; margin: -8px 0px 12px; display: block;">Name must be at least 2 characters.</div>
     <button class="modal-btn" onclick="submitUsername()">Let's Play! 🚀</button>
-    <button class="modal-btn secondary" onclick="closeOverlay('usernameOverlay')">Cancel</button>
+    <button class="modal-btn secondary" onclick="closeOverlay(&#39;usernameOverlay&#39;)">Cancel</button>
   </div>
 </div>
 
@@ -481,7 +471,7 @@ button { font-family:inherit; }
       <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:6px;">with your order today</div>
     </div>
     <button class="modal-btn" onclick="claimOffer()">🎁 Claim My Offer</button>
-    <button class="modal-btn secondary" onclick="closeOverlay('winOverlay');startGame()">Play Again</button>
+    <button class="modal-btn secondary" onclick="closeOverlay(&#39;winOverlay&#39;);startGame()">Play Again</button>
   </div>
 </div>
 
@@ -506,7 +496,7 @@ button { font-family:inherit; }
       <div class="voucher-validity">Valid today only · One time use</div>
       <div class="voucher-disclaimer">📋 Screenshots are not valid. Only live on-screen display accepted at counter.</div>
     </div>
-    <button class="modal-btn secondary" style="margin-top:16px;" onclick="closeOverlay('voucherOverlay');showPage('home')">Done</button>
+    <button class="modal-btn secondary" style="margin-top:16px;" onclick="closeOverlay(&#39;voucherOverlay&#39;);showPage(&#39;home&#39;)">Done</button>
   </div>
 </div>
 
@@ -518,7 +508,7 @@ button { font-family:inherit; }
     <p>You've already claimed your voucher today. Show this code at the counter.</p>
     <div style="background:#111;border:1px solid rgba(245,200,0,0.3);border-radius:10px;padding:12px;font-size:22px;font-weight:700;letter-spacing:3px;color:#f5c800;margin-bottom:16px;" id="alreadyClaimedCode"></div>
     <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:16px;">One voucher per person per day.</p>
-    <button class="modal-btn secondary" onclick="closeOverlay('alreadyClaimedOverlay')">Got it</button>
+    <button class="modal-btn secondary" onclick="closeOverlay(&#39;alreadyClaimedOverlay&#39;)">Got it</button>
   </div>
 </div>
 
@@ -531,7 +521,7 @@ button { font-family:inherit; }
     <input type="password" id="adminPassInput" placeholder="Password..." autocomplete="off">
     <div id="adminPassError" style="color:#ff4d4f;font-size:13px;margin:-8px 0 12px;display:none;">Wrong password.</div>
     <button class="modal-btn" onclick="checkAdminPass()">Enter</button>
-    <button class="modal-btn secondary" onclick="closeOverlay('adminPassOverlay')">Cancel</button>
+    <button class="modal-btn secondary" onclick="closeOverlay(&#39;adminPassOverlay&#39;)">Cancel</button>
   </div>
 </div>
 
@@ -540,186 +530,34 @@ button { font-family:inherit; }
   <div class="modal" style="max-height:88vh;overflow-y:auto;">
     <h2>🔐 Admin Panel</h2>
     <p>Manage leaderboard &amp; game settings</p>
-    <div id="adminContent"></div>
-    <button class="modal-btn secondary" style="margin-top:14px;" onclick="closeOverlay('adminOverlay')">Close</button>
+    <div id="adminContent"><div style="text-align:left;"><div class="diff-section">
+    <h4>🎮 Game Difficulty</h4>
+
+    <div class="diff-row">
+      <div class="diff-label">Spawn Speed (birds/sec) <span id="spawnLabel">43%</span></div>
+      <input class="diff-slider" type="range" min="0" max="100" value="43" oninput="onSliderChange(&#39;spawn&#39;, this.value)" id="spawnSlider">
+    </div>
+
+    <div class="diff-row">
+      <div class="diff-label">Bird Speed <span id="speedLabel">29%</span></div>
+      <input class="diff-slider" type="range" min="0" max="100" value="29" oninput="onSliderChange(&#39;speed&#39;, this.value)" id="speedSlider">
+    </div>
+
+    <div class="diff-preset-row">
+      <button class="diff-preset" onclick="applyPreset(&#39;superEasy&#39;)">🍼 Super Easy</button>
+      <button class="diff-preset" onclick="applyPreset(&#39;easy&#39;)">😊 Easy</button>
+      <button class="diff-preset" onclick="applyPreset(&#39;medium&#39;)">😐 Medium</button>
+      <button class="diff-preset" onclick="applyPreset(&#39;hard&#39;)">😤 Hard</button>
+      <button class="diff-preset" onclick="applyPreset(&#39;insane&#39;)">💀 Insane</button>
+    </div>
+  </div><div style="background:#0d1a2e;border:1px solid #1d4ed8;border-radius:10px;padding:12px 14px;margin-bottom:16px;">
+    <div style="font-size:13px;font-weight:600;color:#60a5fa;margin-bottom:8px;">🧪 Test Tools</div>
+    <button class="modal-btn" style="background:#0d0d1a;color:#f5c800;padding:10px;" onclick="closeOverlay(&#39;adminOverlay&#39;);showWin()">▶ Test Win Screen</button>
+  </div><h4 style="font-size:14px;margin-bottom:10px;color:#f0f0f0;">All Players (0)</h4><p style="color:rgba(255,255,255,0.3);font-size:13px;">No entries yet.</p></div></div>
+    <button class="modal-btn secondary" style="margin-top:14px;" onclick="closeOverlay(&#39;adminOverlay&#39;)">Close</button>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     BACKGROUND ANIMATION — completely separate
-     from game canvas (id="c")
-════════════════════════════════════════════ -->
-<script>
-(function () {
-  var bgCanvas = document.getElementById('bgCanvas');
-  var bgCtx = bgCanvas.getContext('2d');
-  var BW, BH;
-
-  function resizeBg() {
-    BW = bgCanvas.width  = window.innerWidth;
-    BH = bgCanvas.height = window.innerHeight;
-  }
-  resizeBg();
-  window.addEventListener('resize', resizeBg);
-
-  /* ── Glowing dot particles ── */
-  var GOLD   = '#f5c800';
-  var ORANGE = '#ff8c00';
-  var RED    = '#ff4d4f';
-
-  var dots = [];
-  for (var i = 0; i < 55; i++) {
-    dots.push({
-      x:      Math.random() * window.innerWidth,
-      y:      Math.random() * window.innerHeight,
-      vx:     (Math.random() - 0.5) * 0.35,
-      vy:     -0.25 - Math.random() * 0.5,
-      r:      1.5 + Math.random() * 2.5,
-      baseAlpha: 0.12 + Math.random() * 0.28,
-      color:  Math.random() < 0.65 ? GOLD : (Math.random() < 0.5 ? ORANGE : RED),
-      pulse:  Math.random() * Math.PI * 2,
-      pSpeed: 0.012 + Math.random() * 0.025
-    });
-  }
-
-  /* ── Floating food emoji particles ── */
-  var EMOJIS = ['🍜', '🌯', '🥡', '🍚', '🍝', '✨'];
-  var emojis = [];
-  for (var j = 0; j < 10; j++) {
-    emojis.push({
-      x:       Math.random() * window.innerWidth,
-      y:       Math.random() * window.innerHeight,
-      vx:      (Math.random() - 0.5) * 0.28,
-      vy:      -0.12 - Math.random() * 0.22,
-      size:    13 + Math.random() * 12,
-      alpha:   0.055 + Math.random() * 0.065,
-      emoji:   EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
-      rot:     Math.random() * Math.PI * 2,
-      rotSpd:  (Math.random() - 0.5) * 0.008
-    });
-  }
-
-  /* ── Shooting sparkle streaks ── */
-  var streaks = [];
-  function spawnStreak() {
-    var side = Math.floor(Math.random() * 4); // 0=top 1=right 2=bottom 3=left
-    var sx, sy, angle;
-    var speed = 1.8 + Math.random() * 2.2;
-    if (side === 0)      { sx = Math.random() * BW; sy = -10; angle = Math.PI / 2 + (Math.random() - 0.5) * 0.6; }
-    else if (side === 1) { sx = BW + 10; sy = Math.random() * BH; angle = Math.PI + (Math.random() - 0.5) * 0.6; }
-    else if (side === 2) { sx = Math.random() * BW; sy = BH + 10; angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6; }
-    else                 { sx = -10; sy = Math.random() * BH; angle = (Math.random() - 0.5) * 0.6; }
-    streaks.push({
-      x: sx, y: sy,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 1.0,
-      decay: 0.012 + Math.random() * 0.018,
-      len: 22 + Math.random() * 30,
-      color: Math.random() < 0.7 ? GOLD : ORANGE
-    });
-  }
-  // seed some streaks
-  for (var k = 0; k < 4; k++) spawnStreak();
-  setInterval(spawnStreak, 1200);
-
-  /* ── Main bg loop ── */
-  function bgLoop() {
-    requestAnimationFrame(bgLoop);
-
-    // Full-canvas dark gradient background
-    bgCtx.clearRect(0, 0, BW, BH);
-    var grad = bgCtx.createRadialGradient(BW * 0.5, BH * 0.5, 0, BW * 0.5, BH * 0.5, Math.max(BW, BH) * 0.75);
-    grad.addColorStop(0, '#181006');
-    grad.addColorStop(0.55, '#111214');
-    grad.addColorStop(1, '#0a0a0c');
-    bgCtx.fillStyle = grad;
-    bgCtx.fillRect(0, 0, BW, BH);
-
-    /* subtle golden vignette glow at center */
-    var vglow = bgCtx.createRadialGradient(BW * 0.5, BH * 0.38, 0, BW * 0.5, BH * 0.38, BW * 0.55);
-    vglow.addColorStop(0, 'rgba(245,200,0,0.04)');
-    vglow.addColorStop(1, 'rgba(245,200,0,0)');
-    bgCtx.fillStyle = vglow;
-    bgCtx.fillRect(0, 0, BW, BH);
-
-    /* ── draw streaks ── */
-    for (var s = streaks.length - 1; s >= 0; s--) {
-      var st = streaks[s];
-      st.x += st.vx; st.y += st.vy; st.life -= st.decay;
-      if (st.life <= 0) { streaks.splice(s, 1); continue; }
-      bgCtx.save();
-      bgCtx.globalAlpha = st.life * 0.45;
-      bgCtx.strokeStyle = st.color;
-      bgCtx.lineWidth = 1.5;
-      bgCtx.shadowColor = st.color;
-      bgCtx.shadowBlur = 6;
-      bgCtx.beginPath();
-      bgCtx.moveTo(st.x, st.y);
-      bgCtx.lineTo(st.x - st.vx * (st.len / 2), st.y - st.vy * (st.len / 2));
-      bgCtx.stroke();
-      bgCtx.restore();
-    }
-
-    /* ── draw glowing dots ── */
-    for (var d = 0; d < dots.length; d++) {
-      var p = dots[d];
-      p.x += p.vx; p.y += p.vy; p.pulse += p.pSpeed;
-      if (p.y < -20) { p.y = BH + 20; p.x = Math.random() * BW; }
-      if (p.x < -20) p.x = BW + 20;
-      if (p.x > BW + 20) p.x = -20;
-
-      var pulse = (Math.sin(p.pulse) + 1) * 0.5;
-      var alpha = p.baseAlpha * (0.55 + pulse * 0.45);
-
-      // glow halo
-      var grd = bgCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
-      grd.addColorStop(0, p.color + '30');
-      grd.addColorStop(1, 'rgba(0,0,0,0)');
-      bgCtx.beginPath();
-      bgCtx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
-      bgCtx.fillStyle = grd;
-      bgCtx.fill();
-
-      // core dot
-      bgCtx.save();
-      bgCtx.globalAlpha = alpha;
-      bgCtx.beginPath();
-      bgCtx.arc(p.x, p.y, p.r * (0.8 + pulse * 0.35), 0, Math.PI * 2);
-      bgCtx.fillStyle = p.color;
-      bgCtx.shadowColor = p.color;
-      bgCtx.shadowBlur = 8;
-      bgCtx.fill();
-      bgCtx.restore();
-    }
-
-    /* ── draw emoji floaters ── */
-    for (var e = 0; e < emojis.length; e++) {
-      var em = emojis[e];
-      em.x += em.vx; em.y += em.vy; em.rot += em.rotSpd;
-      if (em.y < -40) { em.y = BH + 40; em.x = Math.random() * BW; }
-      if (em.x < -40) em.x = BW + 40;
-      if (em.x > BW + 40) em.x = -40;
-
-      bgCtx.save();
-      bgCtx.globalAlpha = em.alpha;
-      bgCtx.translate(em.x, em.y);
-      bgCtx.rotate(em.rot);
-      bgCtx.font = em.size + 'px serif';
-      bgCtx.textAlign = 'center';
-      bgCtx.textBaseline = 'middle';
-      bgCtx.fillText(em.emoji, 0, 0);
-      bgCtx.restore();
-    }
-  }
-
-  bgLoop();
-})();
-</script>
-
-<!-- ════════════════════════════════
-     MAIN APP SCRIPT (game untouched)
-════════════════════════════════ -->
 <script>
 // ─── SAFE TEXT HELPER (XSS FIX) ───
 function esc(str) {
@@ -733,7 +571,7 @@ function esc(str) {
 
 // ─── TICKER SETUP ───
 (function(){
-  var items = [
+  const items = [
     '🍜 Veg Noodles from ₹60',
     '🌯 Paneer Roll ₹80',
     '🥡 Veg Manchurian from ₹60',
@@ -743,14 +581,15 @@ function esc(str) {
     '🏆 Play Food Guard Now!',
     '📞 9175630108 | 9307567733',
   ];
-  var all = items.concat(items);
-  var html = all.map(function(t){ return '<span class="ticker-item">'+esc(t)+'<span class="ticker-dot"></span></span>'; }).join('');
+  // duplicate for seamless loop
+  const all = [...items, ...items];
+  const html = all.map(t => `<span class="ticker-item">${esc(t)}<span class="ticker-dot"></span></span>`).join('');
   document.getElementById('tickerInner').innerHTML = html;
 })();
 
 // ─── PAGE ROUTING ───
 function showPage(name) {
-  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   window.scrollTo(0, 0);
   if (name !== 'game') {
@@ -760,31 +599,31 @@ function showPage(name) {
     clearInterval(diffInterval);
   }
   if (name === 'leaderboard') renderLeaderboard();
-  if (name === 'game') setTimeout(function(){ resize(); startGame(); }, 50);
+  if (name === 'game') setTimeout(() => { resize(); startGame(); }, 50);
 }
 
 // ─── BAD WORDS FILTER ───
-var BAD_WORDS = ['fuck','shit','ass','bastard','bitch','dick','chutiya','madarchod','bhosdi','gaand','harami','randi','saala','mc','bc','lund','gandu'];
+const BAD_WORDS = ['fuck','shit','ass','bastard','bitch','dick','chutiya','madarchod','bhosdi','gaand','harami','randi','saala','mc','bc','lund','gandu'];
 function isBadName(n) {
-  var s = n.toLowerCase().replace(/\s/g,'');
-  return BAD_WORDS.some(function(w){ return s.includes(w); });
+  const s = n.toLowerCase().replace(/\s/g,'');
+  return BAD_WORDS.some(w => s.includes(w));
 }
 
 // ─── STORAGE HELPERS ───
-function getLeaderboard() { try { return JSON.parse(localStorage.getItem('av_lb') || '[]'); } catch(e) { return []; } }
+function getLeaderboard() { try { return JSON.parse(localStorage.getItem('av_lb') || '[]'); } catch { return []; } }
 function saveLeaderboard(lb) { localStorage.setItem('av_lb', JSON.stringify(lb)); }
-function getFlagged() { try { return JSON.parse(localStorage.getItem('av_flagged') || '[]'); } catch(e) { return []; } }
+function getFlagged() { try { return JSON.parse(localStorage.getItem('av_flagged') || '[]'); } catch { return []; } }
 function saveFlagged(f) { localStorage.setItem('av_flagged', JSON.stringify(f)); }
 
 // ─── DIFFICULTY SETTINGS (persistent) ───
-var DIFF_DEFAULTS = { spawnRate: 1400, birdSpeed: 2.15 };
+const DIFF_DEFAULTS = { spawnRate: 1400, birdSpeed: 2.15 };
 function getDiffSettings() {
-  try { return JSON.parse(localStorage.getItem('av_diff') || 'null') || Object.assign({}, DIFF_DEFAULTS); }
-  catch(e) { return Object.assign({}, DIFF_DEFAULTS); }
+  try { return JSON.parse(localStorage.getItem('av_diff') || 'null') || {...DIFF_DEFAULTS}; }
+  catch { return {...DIFF_DEFAULTS}; }
 }
 function saveDiffSettings(s) { localStorage.setItem('av_diff', JSON.stringify(s)); }
 
-var currentUser = localStorage.getItem('av_username') || null;
+let currentUser = localStorage.getItem('av_username') || null;
 
 // ─── USERNAME FLOW ───
 function askUsername() {
@@ -792,18 +631,18 @@ function askUsername() {
   document.getElementById('usernameInput').value = '';
   document.getElementById('usernameError').style.display = 'none';
   document.getElementById('usernameOverlay').classList.remove('hidden');
-  setTimeout(function(){ document.getElementById('usernameInput').focus(); }, 100);
+  setTimeout(() => document.getElementById('usernameInput').focus(), 100);
 }
 
 function submitUsername() {
-  var val = document.getElementById('usernameInput').value.trim();
-  var errEl = document.getElementById('usernameError');
+  const val = document.getElementById('usernameInput').value.trim();
+  const errEl = document.getElementById('usernameError');
   if (!val || val.length < 2) {
     errEl.textContent = 'Name must be at least 2 characters.';
     errEl.style.display = 'block'; return;
   }
   if (isBadName(val)) {
-    var flagged = getFlagged();
+    const flagged = getFlagged();
     flagged.push({ name: val, time: new Date().toLocaleString() });
     saveFlagged(flagged);
     errEl.textContent = 'Please choose a different name.';
@@ -817,39 +656,43 @@ function submitUsername() {
 
 function closeOverlay(id) { document.getElementById(id).classList.add('hidden'); }
 
-// ─── LEADERBOARD RENDER ───
+// ─── LEADERBOARD RENDER (XSS-safe) ───
 function renderLeaderboard() {
-  var lb = getLeaderboard().sort(function(a,b){ return b.score - a.score; }).slice(0, 10);
-  var el = document.getElementById('lbList');
+  const lb = getLeaderboard().sort((a,b) => b.score - a.score).slice(0, 10);
+  const el = document.getElementById('lbList');
   if (!lb.length) {
     el.innerHTML = '<div class="lb-empty">No scores yet. Be the first to play!</div>';
     return;
   }
-  var medals = ['🥇','🥈','🥉'];
-  el.innerHTML = lb.map(function(e, i){
-    var isYou = e.name === currentUser;
-    var badge = isYou ? '<span class="lb-badge">You</span>' : '';
-    return '<div class="lb-row"><div class="lb-rank">'+(medals[i]||(i+1))+'</div><div class="lb-name">'+esc(e.name)+badge+'</div><div class="lb-score">'+esc(String(e.score))+' pts</div></div>';
+  const medals = ['🥇','🥈','🥉'];
+  el.innerHTML = lb.map((e, i) => {
+    const isYou = e.name === currentUser;
+    const badge = isYou ? `<span class="lb-badge">You</span>` : '';
+    return `<div class="lb-row">
+      <div class="lb-rank">${medals[i] || (i + 1)}</div>
+      <div class="lb-name">${esc(e.name)}${badge}</div>
+      <div class="lb-score">${esc(String(e.score))} pts</div>
+    </div>`;
   }).join('');
 }
 
 function saveScore(name, score) {
-  var lb = getLeaderboard();
-  var ex = lb.find(function(e){ return e.name === name; });
+  const lb = getLeaderboard();
+  const ex = lb.find(e => e.name === name);
   if (ex) { if (score > ex.score) ex.score = score; }
-  else lb.push({ name: name, score: score });
+  else lb.push({ name, score });
   saveLeaderboard(lb);
 }
 
 // ─── ADMIN TAP ───
-var adminTapCount = 0, adminTapTimer = null;
+let adminTapCount = 0, adminTapTimer = null;
 function handleAdminTap() {
   adminTapCount++;
   clearTimeout(adminTapTimer);
-  var hint = document.getElementById('adminTapHint');
+  const hint = document.getElementById('adminTapHint');
   hint.style.opacity = '1';
   hint.textContent = adminTapCount === 1 ? 'Tap 2 more times...' : adminTapCount === 2 ? 'One more...' : '';
-  adminTapTimer = setTimeout(function(){ adminTapCount = 0; hint.style.opacity = '0'; }, 1500);
+  adminTapTimer = setTimeout(() => { adminTapCount = 0; hint.style.opacity = '0'; }, 1500);
   if (adminTapCount >= 3) {
     adminTapCount = 0; hint.style.opacity = '0';
     document.getElementById('adminPassOverlay').classList.remove('hidden');
@@ -866,102 +709,142 @@ function checkAdminPass() {
   }
 }
 
-// ─── ADMIN PANEL ───
+// ─── ADMIN PANEL (XSS-safe + difficulty slider) ───
 function openAdmin() {
-  var lb = getLeaderboard().sort(function(a,b){ return b.score - a.score; });
-  var flagged = getFlagged();
-  var ds = getDiffSettings();
-  var spawnPct = Math.round(((2000 - ds.spawnRate) / (2000 - 600)) * 100);
-  var speedPct = Math.round(((ds.birdSpeed - 1.2) / (4.5 - 1.2)) * 100);
+  const lb = getLeaderboard().sort((a,b) => b.score - a.score);
+  const flagged = getFlagged();
+  const ds = getDiffSettings();
 
-  var html = '<div style="text-align:left;">';
-  html += '<div class="diff-section"><h4>🎮 Game Difficulty</h4>';
-  html += '<div class="diff-row"><div class="diff-label">Spawn Speed (birds/sec) <span id="spawnLabel">'+esc(String(spawnPct))+'%</span></div>';
-  html += '<input class="diff-slider" type="range" min="0" max="100" value="'+esc(String(spawnPct))+'" oninput="onSliderChange(\'spawn\', this.value)" id="spawnSlider"></div>';
-  html += '<div class="diff-row"><div class="diff-label">Bird Speed <span id="speedLabel">'+esc(String(speedPct))+'%</span></div>';
-  html += '<input class="diff-slider" type="range" min="0" max="100" value="'+esc(String(speedPct))+'" oninput="onSliderChange(\'speed\', this.value)" id="speedSlider"></div>';
-  html += '<div class="diff-preset-row">';
-  html += '<button class="diff-preset" onclick="applyPreset(\'superEasy\')">🍼 Super Easy</button>';
-  html += '<button class="diff-preset" onclick="applyPreset(\'easy\')">😊 Easy</button>';
-  html += '<button class="diff-preset" onclick="applyPreset(\'medium\')">😐 Medium</button>';
-  html += '<button class="diff-preset" onclick="applyPreset(\'hard\')">😤 Hard</button>';
-  html += '<button class="diff-preset" onclick="applyPreset(\'insane\')">💀 Insane</button>';
-  html += '</div></div>';
-  html += '<div style="background:#0d1a2e;border:1px solid #1d4ed8;border-radius:10px;padding:12px 14px;margin-bottom:16px;">';
-  html += '<div style="font-size:13px;font-weight:600;color:#60a5fa;margin-bottom:8px;">🧪 Test Tools</div>';
-  html += '<button class="modal-btn" style="background:#0d0d1a;color:#f5c800;padding:10px;" onclick="closeOverlay(\'adminOverlay\');showWin()">▶ Test Win Screen</button></div>';
-  html += '<h4 style="font-size:14px;margin-bottom:10px;color:#f0f0f0;">All Players ('+esc(String(lb.length))+')</h4>';
-  if (!lb.length) html += '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No entries yet.</p>';
-  lb.forEach(function(e){
-    html += '<div class="admin-row"><div><div class="uname">'+esc(e.name)+'</div><div class="uscore">'+esc(String(e.score))+' pts</div></div>';
-    html += '<button class="admin-remove" onclick="adminRemove('+JSON.stringify(e.name)+')">Remove</button></div>';
-  });
-  if (flagged.length) {
-    html += '<div class="flagged-section"><h4>⚠️ Flagged Names ('+esc(String(flagged.length))+')</h4>';
-    flagged.forEach(function(f){
-      html += '<div style="font-size:13px;padding:4px 0;color:#f5c800;">'+esc(f.name)+' <span style="color:rgba(255,255,255,0.3);font-size:11px;">— '+esc(f.time)+'</span></div>';
-    });
-    html += '<button class="modal-btn danger" style="margin-top:10px;padding:8px;" onclick="clearFlagged()">Clear Flagged List</button></div>';
+  // Map spawnRate (600–2000) → difficulty label; birdSpeed (1.2–4.5)
+  const spawnPct   = Math.round(((2000 - ds.spawnRate) / (2000 - 600)) * 100);
+  const speedPct   = Math.round(((ds.birdSpeed - 1.2) / (4.5 - 1.2)) * 100);
+
+  let html = '<div style="text-align:left;">';
+
+  // ── Difficulty Section ──
+  html += `<div class="diff-section">
+    <h4>🎮 Game Difficulty</h4>
+
+    <div class="diff-row">
+      <div class="diff-label">Spawn Speed (birds/sec) <span id="spawnLabel">${esc(String(spawnPct))}%</span></div>
+      <input class="diff-slider" type="range" min="0" max="100" value="${esc(String(spawnPct))}"
+        oninput="onSliderChange('spawn', this.value)" id="spawnSlider">
+    </div>
+
+    <div class="diff-row">
+      <div class="diff-label">Bird Speed <span id="speedLabel">${esc(String(speedPct))}%</span></div>
+      <input class="diff-slider" type="range" min="0" max="100" value="${esc(String(speedPct))}"
+        oninput="onSliderChange('speed', this.value)" id="speedSlider">
+    </div>
+
+    <div class="diff-preset-row">
+      <button class="diff-preset" onclick="applyPreset('superEasy')">🍼 Super Easy</button>
+      <button class="diff-preset" onclick="applyPreset('easy')">😊 Easy</button>
+      <button class="diff-preset" onclick="applyPreset('medium')">😐 Medium</button>
+      <button class="diff-preset" onclick="applyPreset('hard')">😤 Hard</button>
+      <button class="diff-preset" onclick="applyPreset('insane')">💀 Insane</button>
+    </div>
+  </div>`;
+
+  // ── Test Tools ──
+  html += `<div style="background:#0d1a2e;border:1px solid #1d4ed8;border-radius:10px;padding:12px 14px;margin-bottom:16px;">
+    <div style="font-size:13px;font-weight:600;color:#60a5fa;margin-bottom:8px;">🧪 Test Tools</div>
+    <button class="modal-btn" style="background:#0d0d1a;color:#f5c800;padding:10px;" onclick="closeOverlay('adminOverlay');showWin()">▶ Test Win Screen</button>
+  </div>`;
+
+  // ── Players ──
+  html += `<h4 style="font-size:14px;margin-bottom:10px;color:#f0f0f0;">All Players (${esc(String(lb.length))})</h4>`;
+  if (!lb.length) {
+    html += '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No entries yet.</p>';
   }
+  lb.forEach(e => {
+    html += `<div class="admin-row">
+      <div>
+        <div class="uname">${esc(e.name)}</div>
+        <div class="uscore">${esc(String(e.score))} pts</div>
+      </div>
+      <button class="admin-remove" onclick="adminRemove(${JSON.stringify(e.name)})">Remove</button>
+    </div>`;
+  });
+
+  // ── Flagged ──
+  if (flagged.length) {
+    html += `<div class="flagged-section">
+      <h4>⚠️ Flagged Names (${esc(String(flagged.length))})</h4>`;
+    flagged.forEach(f => {
+      html += `<div style="font-size:13px;padding:4px 0;color:#f5c800;">
+        ${esc(f.name)} <span style="color:rgba(255,255,255,0.3);font-size:11px;">— ${esc(f.time)}</span>
+      </div>`;
+    });
+    html += `<button class="modal-btn danger" style="margin-top:10px;padding:8px;" onclick="clearFlagged()">Clear Flagged List</button>
+    </div>`;
+  }
+
   html += '</div>';
   document.getElementById('adminContent').innerHTML = html;
   document.getElementById('adminOverlay').classList.remove('hidden');
 }
 
 function onSliderChange(type, val) {
-  var v = parseInt(val);
-  var ds = getDiffSettings();
+  const v = parseInt(val);
+  const ds = getDiffSettings();
   if (type === 'spawn') {
+    // val 0=slowest spawn (easy), 100=fastest spawn (hard)
     ds.spawnRate = Math.round(2000 - (v / 100) * (2000 - 600));
-    var el = document.getElementById('spawnLabel');
+    const el = document.getElementById('spawnLabel');
     if (el) el.textContent = v + '%';
   } else {
     ds.birdSpeed = parseFloat((1.2 + (v / 100) * (4.5 - 1.2)).toFixed(2));
-    var el2 = document.getElementById('speedLabel');
-    if (el2) el2.textContent = v + '%';
+    const el = document.getElementById('speedLabel');
+    if (el) el.textContent = v + '%';
   }
   saveDiffSettings(ds);
 }
 
 function applyPreset(preset) {
-  var presets = {
+  const presets = {
     superEasy: { spawnRate: 3000, birdSpeed: 0.7 },
-    easy:      { spawnRate: 1900, birdSpeed: 1.5 },
-    medium:    { spawnRate: 1400, birdSpeed: 2.15 },
-    hard:      { spawnRate: 900,  birdSpeed: 3.0 },
-    insane:    { spawnRate: 620,  birdSpeed: 4.2 },
+    easy:   { spawnRate: 1900, birdSpeed: 1.5 },
+    medium: { spawnRate: 1400, birdSpeed: 2.15 },
+    hard:   { spawnRate: 900,  birdSpeed: 3.0 },
+    insane: { spawnRate: 620,  birdSpeed: 4.2 },
   };
-  saveDiffSettings(presets[preset]);
+  const ds = presets[preset];
+  saveDiffSettings(ds);
+  // Refresh admin panel to reflect new values
   openAdmin();
 }
 
 function adminRemove(name) {
   if (!confirm('Remove "' + name + '" from leaderboard?')) return;
-  saveLeaderboard(getLeaderboard().filter(function(e){ return e.name !== name; }));
+  saveLeaderboard(getLeaderboard().filter(e => e.name !== name));
   openAdmin();
 }
+
 function clearFlagged() { saveFlagged([]); openAdmin(); }
 
 // ─── CLAIM / VOUCHER ───
 function claimOffer() {
-  var claimKey = 'av_claimed_' + currentUser;
-  var existing = localStorage.getItem(claimKey);
-  var today = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+  const claimKey = 'av_claimed_' + currentUser;
+  const existing = localStorage.getItem(claimKey);
+  const today = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
   if (existing) {
-    var data = JSON.parse(existing);
+    const data = JSON.parse(existing);
     if (data.date === today) {
       closeOverlay('winOverlay');
+      // XSS-safe: use textContent
       document.getElementById('alreadyClaimedCode').textContent = data.code;
       document.getElementById('alreadyClaimedOverlay').classList.remove('hidden');
       return;
     }
   }
-  var rand = Math.random().toString(36).substring(2, 6).toUpperCase();
-  var initials = currentUser.substring(0, 2).toUpperCase();
-  var dateShort = new Date().toLocaleDateString('en-IN',{ day:'2-digit', month:'2-digit' }).replace('/','');
-  var code = 'AV' + dateShort + initials + rand;
-  localStorage.setItem(claimKey, JSON.stringify({ code: code, date: today }));
+  const rand = Math.random().toString(36).substring(2, 6).toUpperCase();
+  const initials = currentUser.substring(0, 2).toUpperCase();
+  const dateShort = new Date().toLocaleDateString('en-IN',{ day:'2-digit', month:'2-digit' }).replace('/','');
+  const code = 'AV' + dateShort + initials + rand;
+  localStorage.setItem(claimKey, JSON.stringify({ code, date: today }));
   closeOverlay('winOverlay');
+  // XSS-safe: textContent for all dynamic values
   document.getElementById('voucherCode').textContent  = code;
   document.getElementById('voucherName').textContent  = currentUser;
   document.getElementById('voucherDate').textContent  = today;
@@ -984,78 +867,78 @@ function showGameOver() {
 }
 
 // ════════════════════════════════
-//  GAME ENGINE  (id="c" canvas)
+//  GAME ENGINE
 // ════════════════════════════════
-var canvas = document.getElementById('c');
-var ctx = canvas.getContext('2d');
-var W, H, cx, cy, R;
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H, cx, cy, R;
 
 function resize() {
-  var size = Math.min(window.innerWidth, window.innerHeight - 120);
+  const size = Math.min(window.innerWidth, window.innerHeight - 120);
   canvas.width = W = size;
   canvas.height = H = size;
   cx = W / 2; cy = H / 2; R = size * 0.09;
 }
 
-var shieldAngle = 0, score = 0, lives = 3;
-var birds = [], particles = [], running = false;
-var spawnInterval, diffInterval, frameId;
-var spawnRate, birdSpeed, currentShieldArc;
-var SHIELD_ARC_MAX = Math.PI * 0.275, SHIELD_ARC_MIN = Math.PI * 0.07;
+let shieldAngle = 0, score = 0, lives = 3;
+let birds = [], particles = [], running = false;
+let spawnInterval, diffInterval, frameId;
+let spawnRate, birdSpeed, currentShieldArc;
+const SHIELD_ARC_MAX = Math.PI * 0.275, SHIELD_ARC_MIN = Math.PI * 0.07;
 
-canvas.addEventListener('mousemove', function(e) {
-  var r = canvas.getBoundingClientRect();
+canvas.addEventListener('mousemove', e => {
+  const r = canvas.getBoundingClientRect();
   shieldAngle = Math.atan2(e.clientY - r.top - cy, e.clientX - r.left - cx);
 });
-canvas.addEventListener('touchmove', function(e) {
+canvas.addEventListener('touchmove', e => {
   e.preventDefault();
-  var r = canvas.getBoundingClientRect(), t = e.touches[0];
+  const r = canvas.getBoundingClientRect(), t = e.touches[0];
   shieldAngle = Math.atan2(t.clientY - r.top - cy, t.clientX - r.left - cx);
 }, { passive: false });
 
 function spawnBird() {
-  var angle = Math.random() * Math.PI * 2;
-  var dist = Math.max(W, H) * 0.62;
+  const angle = Math.random() * Math.PI * 2;
+  const dist = Math.max(W, H) * 0.62;
   birds.push({
     x: cx + Math.cos(angle) * dist,
     y: cy + Math.sin(angle) * dist,
-    angle: angle, speed: birdSpeed + Math.random() * 0.8,
+    angle, speed: birdSpeed + Math.random() * 0.8,
     size: W * 0.032, wobble: Math.random() * Math.PI * 2
   });
 }
 
-function spawnParticles(x, y, color, count) {
-  count = count || 10;
-  for (var i = 0; i < count; i++) {
-    var a = Math.random() * Math.PI * 2, spd = 2 + Math.random() * 4;
-    particles.push({ x: x, y: y, vx: Math.cos(a)*spd, vy: Math.sin(a)*spd, alpha: 1, color: color, r: 3+Math.random()*4 });
+function spawnParticles(x, y, color, count = 10) {
+  for (let i = 0; i < count; i++) {
+    const a = Math.random() * Math.PI * 2, spd = 2 + Math.random() * 4;
+    particles.push({ x, y, vx: Math.cos(a)*spd, vy: Math.sin(a)*spd, alpha:1, color, r:3+Math.random()*4 });
   }
 }
 
 function updateLives() {
   document.getElementById('lives').innerHTML = [0,1,2]
-    .map(function(i){ return '<span style="opacity:'+(i < lives ? 1 : 0.2)+'">❤️</span>'; })
+    .map(i => `<span style="opacity:${i < lives ? 1 : 0.2}">❤️</span>`)
     .join('');
 }
 
 function startGame() {
   score = 0; lives = 3; birds = []; particles = [];
   currentShieldArc = SHIELD_ARC_MAX;
-  var ds = getDiffSettings();
+  // Load saved difficulty settings
+  const ds = getDiffSettings();
   spawnRate = ds.spawnRate;
   birdSpeed = ds.birdSpeed;
   document.getElementById('scoreDisplay').textContent = 0;
   document.getElementById('progressBar').style.width = '0%';
   updateLives(); running = true;
   clearInterval(spawnInterval); clearInterval(diffInterval);
-  spawnInterval = setInterval(function(){ if (running) spawnBird(); }, spawnRate);
-  diffInterval = setInterval(function(){
+  spawnInterval = setInterval(() => { if (running) spawnBird(); }, spawnRate);
+  diffInterval = setInterval(() => {
     if (!running) return;
     birdSpeed += 0.08;
     if (spawnRate > 600) {
       spawnRate -= 40;
       clearInterval(spawnInterval);
-      spawnInterval = setInterval(function(){ if (running) spawnBird(); }, spawnRate);
+      spawnInterval = setInterval(() => { if (running) spawnBird(); }, spawnRate);
     }
   }, 7000);
   cancelAnimationFrame(frameId);
@@ -1071,15 +954,15 @@ function drawPlate() {
   ctx.strokeStyle = '#f5c800'; ctx.lineWidth = 2; ctx.stroke();
   ctx.beginPath(); ctx.arc(cx, cy, R*0.82, 0, Math.PI*2);
   ctx.strokeStyle = 'rgba(245,200,0,0.3)'; ctx.lineWidth = 1; ctx.stroke();
-  ctx.font = (R * 0.95) + 'px serif';
+  ctx.font = `${R * 0.95}px serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText('🍜', cx, cy + 2);
 }
 
 function drawShield() {
-  var r = R * 1.72;
-  var start = shieldAngle - currentShieldArc / 2;
-  var end   = shieldAngle + currentShieldArc / 2;
+  const r = R * 1.72;
+  const start = shieldAngle - currentShieldArc / 2;
+  const end   = shieldAngle + currentShieldArc / 2;
   ctx.save(); ctx.shadowColor = '#f5c800'; ctx.shadowBlur = 18;
   ctx.beginPath(); ctx.arc(cx, cy, r, start, end);
   ctx.strokeStyle = '#f5c800'; ctx.lineWidth = W * 0.028; ctx.lineCap = 'round'; ctx.stroke();
@@ -1089,7 +972,7 @@ function drawShield() {
 }
 
 function angleDiff(a, b) {
-  var d = a - b;
+  let d = a - b;
   while (d >  Math.PI) d -= Math.PI * 2;
   while (d < -Math.PI) d += Math.PI * 2;
   return Math.abs(d);
@@ -1099,25 +982,25 @@ function loop() {
   if (!running) return;
   frameId = requestAnimationFrame(loop);
   ctx.clearRect(0, 0, W, H);
-  var bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.7);
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.7);
   bg.addColorStop(0, '#1a1000'); bg.addColorStop(1, '#0a0800');
   ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
   ctx.beginPath(); ctx.arc(cx, cy, R * 1.72, 0, Math.PI * 2);
   ctx.strokeStyle = 'rgba(245,200,0,0.08)'; ctx.lineWidth = 1; ctx.stroke();
   drawPlate(); drawShield();
 
-  var SR = R * 1.72;
-  for (var i = birds.length - 1; i >= 0; i--) {
-    var b = birds[i];
-    var dx = cx - b.x, dy = cy - b.y;
-    var dist = Math.sqrt(dx*dx + dy*dy);
+  const SR = R * 1.72;
+  for (let i = birds.length - 1; i >= 0; i--) {
+    const b = birds[i];
+    const dx = cx - b.x, dy = cy - b.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
     b.angle = Math.atan2(dy, dx);
     b.x += Math.cos(b.angle) * b.speed;
     b.y += Math.sin(b.angle) * b.speed;
     b.wobble += 0.18;
 
     if (dist < SR + b.size * 1.2 && dist > SR - b.size * 1.2) {
-      var ba = Math.atan2(b.y - cy, b.x - cx);
+      const ba = Math.atan2(b.y - cy, b.x - cx);
       if (angleDiff(ba, shieldAngle) < currentShieldArc / 2) {
         spawnParticles(b.x, b.y, '#f5c800', 10);
         birds.splice(i, 1);
@@ -1140,18 +1023,18 @@ function loop() {
     ctx.save();
     ctx.translate(b.x, b.y);
     ctx.rotate(b.angle + Math.PI + Math.sin(b.wobble) * 0.3);
-    ctx.font = (b.size * 1.6) + 'px serif';
+    ctx.font = `${b.size * 1.6}px serif`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText('🐦', 0, 0);
     ctx.restore();
   }
 
-  for (var pi = particles.length - 1; pi >= 0; pi--) {
-    var p = particles[pi];
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
     p.x += p.vx; p.y += p.vy;
     p.alpha -= 0.045;
     p.vx *= 0.92; p.vy *= 0.92;
-    if (p.alpha <= 0) { particles.splice(pi, 1); continue; }
+    if (p.alpha <= 0) { particles.splice(i, 1); continue; }
     ctx.save();
     ctx.globalAlpha = p.alpha;
     ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
@@ -1160,10 +1043,48 @@ function loop() {
   }
 }
 
-window.addEventListener('resize', function(){
+window.addEventListener('resize', () => {
   if (document.getElementById('page-game').classList.contains('active')) resize();
 });
-document.getElementById('usernameInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') submitUsername(); });
-document.getElementById('adminPassInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') checkAdminPass(); });
+document.getElementById('usernameInput').addEventListener('keydown', e => { if (e.key === 'Enter') submitUsername(); });
+document.getElementById('adminPassInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkAdminPass(); });
 </script>
-</body></html>
+
+
+<script>
+(function() {
+  var ws = new WebSocket('ws://' + window.location.host + 
+             '/jb-server-page?reloadMode=RELOAD_ON_SAVE&'+
+             'referrer=' + encodeURIComponent(window.location.pathname));
+  ws.onmessage = function (msg) {
+      if (msg.data === 'reload') {
+          window.location.reload();
+      }
+      if (msg.data.startsWith('update-css ')) {
+          var messageId = msg.data.substring(11);
+          var links = document.getElementsByTagName('link');
+          for (var i = 0; i < links.length; i++) {
+              var link = links[i];
+              if (link.rel !== 'stylesheet') continue;
+              var clonedLink = link.cloneNode(true);
+              var newHref = link.href.replace(/(&|\?)jbUpdateLinksId=\d+/, "$1jbUpdateLinksId=" + messageId);
+              if (newHref !== link.href) {
+                clonedLink.href = newHref;
+              }
+              else {
+                var indexOfQuest = newHref.indexOf('?');
+                if (indexOfQuest >= 0) {
+                  // to support ?foo#hash 
+                  clonedLink.href = newHref.substring(0, indexOfQuest + 1) + 'jbUpdateLinksId=' + messageId + '&' + 
+                                    newHref.substring(indexOfQuest + 1);
+                }
+                else {
+                  clonedLink.href += '?' + 'jbUpdateLinksId=' + messageId;
+                }
+              }
+              link.replaceWith(clonedLink);
+          }
+      }
+  };
+})();
+</script></body></html>
