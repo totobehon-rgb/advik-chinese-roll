@@ -191,6 +191,7 @@ canvas#c { display:block; border-radius:16px; max-width:100%; }
 .lb-row { background:rgba(26,26,26,0.85); border:1px solid rgba(245,200,0,0.1); border-radius:12px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; gap:14px; }
 .lb-rank { font-size:22px; min-width:36px; text-align:center; }
 .lb-name { font-size:15px; font-weight:600; flex:1; color:#f0f0f0; }
+.lb-name-date { font-size:11px; color:rgba(255,255,255,0.3); margin-top:3px; font-weight:400; }
 .lb-score { font-size:16px; font-weight:700; color:#f5c800; }
 .lb-empty { text-align:center; color:rgba(255,255,255,0.3); font-size:14px; padding:40px 20px; }
 .lb-badge { font-size:10px; padding:2px 8px; border-radius:99px; background:rgba(245,200,0,0.15); color:#f5c800; font-weight:600; margin-left:6px; border:1px solid rgba(245,200,0,0.3); }
@@ -280,6 +281,20 @@ canvas#c { display:block; border-radius:16px; max-width:100%; }
   color:#f5c800;
   text-decoration:underline;
 }
+
+/* PLAYS LIMIT PILL */
+.plays-pill {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(255,77,79,0.12); border:1px solid rgba(255,77,79,0.35);
+  color:#ff7875; font-size:12px; font-weight:700;
+  padding:6px 14px; border-radius:99px; margin-bottom:16px;
+}
+.plays-dots { display:flex; gap:5px; justify-content:center; margin-bottom:18px; }
+.plays-dot {
+  width:32px; height:8px; border-radius:99px;
+}
+.plays-dot.used { background:#ff4d4f; }
+.plays-dot.left  { background:rgba(255,255,255,0.12); }
 
 button { font-family:inherit; }
 </style>
@@ -476,8 +491,9 @@ button { font-family:inherit; }
       <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:4px;">YOUR SCORE</div>
       <div style="font-size:42px;font-weight:900;color:#f5c800;line-height:1;" id="gameOverScore">0</div>
       <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:4px;">Score 500 to win free noodles!</div>
+      <div style="font-size:12px;color:rgba(255,100,100,0.7);margin-top:6px;" id="gameOverPlaysLeft"></div>
     </div>
-    <button class="modal-btn" onclick="document.getElementById('gameOverOverlay').classList.add('hidden'); startGame();">🔄 Try Again</button>
+    <button class="modal-btn" onclick="document.getElementById('gameOverOverlay').classList.add('hidden'); checkAndStartGame();">🔄 Try Again</button>
     <button class="modal-btn secondary" onclick="document.getElementById('gameOverOverlay').classList.add('hidden'); showPage('leaderboard');">🏆 Leaderboard</button>
     <button class="modal-btn secondary" onclick="document.getElementById('gameOverOverlay').classList.add('hidden'); showPage('home');">🏠 Home</button>
   </div>
@@ -494,7 +510,7 @@ button { font-family:inherit; }
       <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:6px;">with your order today</div>
     </div>
     <button class="modal-btn" onclick="claimOffer()">🎁 Claim My Offer</button>
-    <button class="modal-btn secondary" onclick="closeOverlay('winOverlay');startGame()">Play Again</button>
+    <button class="modal-btn secondary" onclick="closeOverlay('winOverlay'); checkAndStartGame()">Play Again</button>
   </div>
 </div>
 
@@ -532,6 +548,21 @@ button { font-family:inherit; }
     <div style="background:#111;border:1px solid rgba(245,200,0,0.3);border-radius:10px;padding:12px;font-size:22px;font-weight:700;letter-spacing:3px;color:#f5c800;margin-bottom:16px;" id="alreadyClaimedCode"></div>
     <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:16px;">One voucher per person per day.</p>
     <button class="modal-btn secondary" onclick="closeOverlay('alreadyClaimedOverlay')">Got it</button>
+  </div>
+</div>
+
+<!-- ── PLAYS LIMIT MODAL (NEW) ── -->
+<div class="overlay hidden" id="playsLimitOverlay">
+  <div class="modal">
+    <div style="font-size:44px;margin-bottom:10px;">⏰</div>
+    <h2>Daily Limit Reached!</h2>
+    <p>You've used all <strong style="color:#f5c800;">5 plays</strong> for today.<br>Come back tomorrow for more chances to win free noodles!</p>
+    <div class="plays-dots" id="playsLimitDots"></div>
+    <div style="background:rgba(255,77,79,0.1);border:1px solid rgba(255,77,79,0.25);border-radius:10px;padding:10px 14px;font-size:13px;color:rgba(255,150,150,0.8);margin-bottom:18px;">
+      🔄 Resets every day at midnight
+    </div>
+    <button class="modal-btn secondary" onclick="closeOverlay('playsLimitOverlay'); showPage('leaderboard')">🏆 View Leaderboard</button>
+    <button class="modal-btn secondary" onclick="closeOverlay('playsLimitOverlay'); showPage('home')">🏠 Go Home</button>
   </div>
 </div>
 
@@ -575,7 +606,6 @@ button { font-family:inherit; }
   resizeBg();
   window.addEventListener('resize', resizeBg);
 
-  /* ── Glowing dot particles ── */
   var GOLD   = '#f5c800';
   var ORANGE = '#ff8c00';
   var RED    = '#ff4d4f';
@@ -595,7 +625,6 @@ button { font-family:inherit; }
     });
   }
 
-  /* ── Floating food emoji particles ── */
   var EMOJIS = ['🍜', '🌯', '🥡', '🍚', '🍝', '✨'];
   var emojis = [];
   for (var j = 0; j < 10; j++) {
@@ -612,10 +641,9 @@ button { font-family:inherit; }
     });
   }
 
-  /* ── Shooting sparkle streaks ── */
   var streaks = [];
   function spawnStreak() {
-    var side = Math.floor(Math.random() * 4); // 0=top 1=right 2=bottom 3=left
+    var side = Math.floor(Math.random() * 4);
     var sx, sy, angle;
     var speed = 1.8 + Math.random() * 2.2;
     if (side === 0)      { sx = Math.random() * BW; sy = -10; angle = Math.PI / 2 + (Math.random() - 0.5) * 0.6; }
@@ -632,15 +660,11 @@ button { font-family:inherit; }
       color: Math.random() < 0.7 ? GOLD : ORANGE
     });
   }
-  // seed some streaks
   for (var k = 0; k < 4; k++) spawnStreak();
   setInterval(spawnStreak, 1200);
 
-  /* ── Main bg loop ── */
   function bgLoop() {
     requestAnimationFrame(bgLoop);
-
-    // Full-canvas dark gradient background
     bgCtx.clearRect(0, 0, BW, BH);
     var grad = bgCtx.createRadialGradient(BW * 0.5, BH * 0.5, 0, BW * 0.5, BH * 0.5, Math.max(BW, BH) * 0.75);
     grad.addColorStop(0, '#181006');
@@ -649,14 +673,12 @@ button { font-family:inherit; }
     bgCtx.fillStyle = grad;
     bgCtx.fillRect(0, 0, BW, BH);
 
-    /* subtle golden vignette glow at center */
     var vglow = bgCtx.createRadialGradient(BW * 0.5, BH * 0.38, 0, BW * 0.5, BH * 0.38, BW * 0.55);
     vglow.addColorStop(0, 'rgba(245,200,0,0.04)');
     vglow.addColorStop(1, 'rgba(245,200,0,0)');
     bgCtx.fillStyle = vglow;
     bgCtx.fillRect(0, 0, BW, BH);
 
-    /* ── draw streaks ── */
     for (var s = streaks.length - 1; s >= 0; s--) {
       var st = streaks[s];
       st.x += st.vx; st.y += st.vy; st.life -= st.decay;
@@ -674,18 +696,14 @@ button { font-family:inherit; }
       bgCtx.restore();
     }
 
-    /* ── draw glowing dots ── */
     for (var d = 0; d < dots.length; d++) {
       var p = dots[d];
       p.x += p.vx; p.y += p.vy; p.pulse += p.pSpeed;
       if (p.y < -20) { p.y = BH + 20; p.x = Math.random() * BW; }
       if (p.x < -20) p.x = BW + 20;
       if (p.x > BW + 20) p.x = -20;
-
       var pulse = (Math.sin(p.pulse) + 1) * 0.5;
       var alpha = p.baseAlpha * (0.55 + pulse * 0.45);
-
-      // glow halo
       var grd = bgCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
       grd.addColorStop(0, p.color + '30');
       grd.addColorStop(1, 'rgba(0,0,0,0)');
@@ -693,8 +711,6 @@ button { font-family:inherit; }
       bgCtx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
       bgCtx.fillStyle = grd;
       bgCtx.fill();
-
-      // core dot
       bgCtx.save();
       bgCtx.globalAlpha = alpha;
       bgCtx.beginPath();
@@ -706,14 +722,12 @@ button { font-family:inherit; }
       bgCtx.restore();
     }
 
-    /* ── draw emoji floaters ── */
     for (var e = 0; e < emojis.length; e++) {
       var em = emojis[e];
       em.x += em.vx; em.y += em.vy; em.rot += em.rotSpd;
       if (em.y < -40) { em.y = BH + 40; em.x = Math.random() * BW; }
       if (em.x < -40) em.x = BW + 40;
       if (em.x > BW + 40) em.x = -40;
-
       bgCtx.save();
       bgCtx.globalAlpha = em.alpha;
       bgCtx.translate(em.x, em.y);
@@ -731,10 +745,10 @@ button { font-family:inherit; }
 </script>
 
 <!-- ════════════════════════════════
-     MAIN APP SCRIPT (game untouched)
+     MAIN APP SCRIPT
 ════════════════════════════════ -->
 <script>
-// ─── SAFE TEXT HELPER (XSS FIX) ───
+// ─── SAFE TEXT HELPER ───
 function esc(str) {
   return String(str)
     .replace(/&/g,'&amp;')
@@ -773,7 +787,7 @@ function showPage(name) {
     clearInterval(diffInterval);
   }
   if (name === 'leaderboard') renderLeaderboard();
-  if (name === 'game') setTimeout(function(){ resize(); startGame(); }, 50);
+  if (name === 'game') setTimeout(function(){ resize(); checkAndStartGame(); }, 50);
 }
 
 // ─── BAD WORDS FILTER ───
@@ -788,6 +802,42 @@ function getLeaderboard() { try { return JSON.parse(localStorage.getItem('av_lb'
 function saveLeaderboard(lb) { localStorage.setItem('av_lb', JSON.stringify(lb)); }
 function getFlagged() { try { return JSON.parse(localStorage.getItem('av_flagged') || '[]'); } catch(e) { return []; } }
 function saveFlagged(f) { localStorage.setItem('av_flagged', JSON.stringify(f)); }
+
+// ─── DATE HELPER ───
+function getTodayStr() {
+  return new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+// ─── PLAYS LIMIT (5 per day per user) ───
+var MAX_PLAYS = 5;
+
+function getPlaysToday(username) {
+  var key = 'av_plays_' + username + '_' + getTodayStr();
+  return parseInt(localStorage.getItem(key) || '0');
+}
+
+function incrementPlays(username) {
+  var key = 'av_plays_' + username + '_' + getTodayStr();
+  localStorage.setItem(key, getPlaysToday(username) + 1);
+}
+
+// ─── CHECK LIMIT THEN START ───
+function checkAndStartGame() {
+  if (!currentUser) { showPage('home'); return; }
+  var plays = getPlaysToday(currentUser);
+  if (plays >= MAX_PLAYS) {
+    // Build the 5 dots visual
+    var dots = '';
+    for (var i = 0; i < MAX_PLAYS; i++) {
+      dots += '<div class="plays-dot ' + (i < plays ? 'used' : 'left') + '"></div>';
+    }
+    document.getElementById('playsLimitDots').innerHTML = dots;
+    document.getElementById('playsLimitOverlay').classList.remove('hidden');
+    return;
+  }
+  incrementPlays(currentUser);
+  startGame();
+}
 
 // ─── DIFFICULTY SETTINGS (persistent) ───
 var DIFF_DEFAULTS = { spawnRate: 1400, birdSpeed: 2.15 };
@@ -831,6 +881,9 @@ function submitUsername() {
 function closeOverlay(id) { document.getElementById(id).classList.add('hidden'); }
 
 // ─── LEADERBOARD RENDER ───
+// Each entry: { name, score, date }
+// Same name on different dates = separate entries
+// Sorted by score desc, top 10 shown
 function renderLeaderboard() {
   var lb = getLeaderboard().sort(function(a,b){ return b.score - a.score; }).slice(0, 10);
   var el = document.getElementById('lbList');
@@ -842,15 +895,31 @@ function renderLeaderboard() {
   el.innerHTML = lb.map(function(e, i){
     var isYou = e.name === currentUser;
     var badge = isYou ? '<span class="lb-badge">You</span>' : '';
-    return '<div class="lb-row"><div class="lb-rank">'+(medals[i]||(i+1))+'</div><div class="lb-name">'+esc(e.name)+badge+'</div><div class="lb-score">'+esc(String(e.score))+' pts</div></div>';
+    var dateStr = e.date ? '<div class="lb-name-date">📅 ' + esc(e.date) + '</div>' : '';
+    return (
+      '<div class="lb-row">' +
+        '<div class="lb-rank">' + (medals[i] || (i + 1)) + '</div>' +
+        '<div class="lb-name">' +
+          '<div>' + esc(e.name) + badge + '</div>' +
+          dateStr +
+        '</div>' +
+        '<div class="lb-score">' + esc(String(e.score)) + ' pts</div>' +
+      '</div>'
+    );
   }).join('');
 }
 
+// ─── SAVE SCORE (now tracks date, same name+different date = new entry) ───
 function saveScore(name, score) {
   var lb = getLeaderboard();
-  var ex = lb.find(function(e){ return e.name === name; });
-  if (ex) { if (score > ex.score) ex.score = score; }
-  else lb.push({ name: name, score: score });
+  var today = getTodayStr();
+  // Find existing entry for same name AND same date
+  var ex = lb.find(function(e){ return e.name === name && e.date === today; });
+  if (ex) {
+    if (score > ex.score) ex.score = score;
+  } else {
+    lb.push({ name: name, score: score, date: today });
+  }
   saveLeaderboard(lb);
 }
 
@@ -903,11 +972,12 @@ function openAdmin() {
   html += '<div style="background:#0d1a2e;border:1px solid #1d4ed8;border-radius:10px;padding:12px 14px;margin-bottom:16px;">';
   html += '<div style="font-size:13px;font-weight:600;color:#60a5fa;margin-bottom:8px;">🧪 Test Tools</div>';
   html += '<button class="modal-btn" style="background:#0d0d1a;color:#f5c800;padding:10px;" onclick="closeOverlay(\'adminOverlay\');showWin()">▶ Test Win Screen</button></div>';
-  html += '<h4 style="font-size:14px;margin-bottom:10px;color:#f0f0f0;">All Players ('+esc(String(lb.length))+')</h4>';
+  html += '<h4 style="font-size:14px;margin-bottom:10px;color:#f0f0f0;">All Entries ('+esc(String(lb.length))+')</h4>';
   if (!lb.length) html += '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No entries yet.</p>';
   lb.forEach(function(e){
-    html += '<div class="admin-row"><div><div class="uname">'+esc(e.name)+'</div><div class="uscore">'+esc(String(e.score))+' pts</div></div>';
-    html += '<button class="admin-remove" onclick="adminRemove('+JSON.stringify(e.name)+')">Remove</button></div>';
+    var dateLabel = e.date ? ' · ' + esc(e.date) : '';
+    html += '<div class="admin-row"><div><div class="uname">'+esc(e.name)+'</div><div class="uscore">'+esc(String(e.score))+' pts'+dateLabel+'</div></div>';
+    html += '<button class="admin-remove" onclick="adminRemove('+JSON.stringify(e.name)+','+JSON.stringify(e.date||'')+')"">Remove</button></div>';
   });
   if (flagged.length) {
     html += '<div class="flagged-section"><h4>⚠️ Flagged Names ('+esc(String(flagged.length))+')</h4>';
@@ -948,9 +1018,13 @@ function applyPreset(preset) {
   openAdmin();
 }
 
-function adminRemove(name) {
-  if (!confirm('Remove "' + name + '" from leaderboard?')) return;
-  saveLeaderboard(getLeaderboard().filter(function(e){ return e.name !== name; }));
+// ─── Admin remove now works by name + date pair ───
+function adminRemove(name, date) {
+  var label = date ? '"' + name + '" (' + date + ')' : '"' + name + '"';
+  if (!confirm('Remove ' + label + ' from leaderboard?')) return;
+  saveLeaderboard(getLeaderboard().filter(function(e){
+    return !(e.name === name && (e.date || '') === date);
+  }));
   openAdmin();
 }
 function clearFlagged() { saveFlagged([]); openAdmin(); }
@@ -959,7 +1033,7 @@ function clearFlagged() { saveFlagged([]); openAdmin(); }
 function claimOffer() {
   var claimKey = 'av_claimed_' + currentUser;
   var existing = localStorage.getItem(claimKey);
-  var today = new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+  var today = getTodayStr();
   if (existing) {
     var data = JSON.parse(existing);
     if (data.date === today) {
@@ -993,6 +1067,15 @@ function showGameOver() {
   clearInterval(spawnInterval); clearInterval(diffInterval); cancelAnimationFrame(frameId);
   if (currentUser) saveScore(currentUser, score);
   document.getElementById('gameOverScore').textContent = score;
+  // Show remaining plays info
+  var plays = getPlaysToday(currentUser);
+  var remaining = MAX_PLAYS - plays;
+  var playsEl = document.getElementById('gameOverPlaysLeft');
+  if (remaining > 0) {
+    playsEl.textContent = '🎮 ' + remaining + ' play' + (remaining === 1 ? '' : 's') + ' remaining today';
+  } else {
+    playsEl.textContent = '⏰ No plays left today. Come back tomorrow!';
+  }
   document.getElementById('gameOverOverlay').classList.remove('hidden');
 }
 
